@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Auth;
+//use Auth;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
@@ -18,7 +19,7 @@ class AuthController extends Controller
         try{
             if(Auth::attempt($request->only('email', 'password'))){
                 $user = Auth::user();
-                $token = $user->createToken()->accessToken;
+                $token = $user->createToken('app')->accessToken;
 
                 return response([
                     'message' => "Successfully Login",
@@ -48,7 +49,7 @@ class AuthController extends Controller
             ]);
 
             $token=$user->createToken('app')->accessToken;
-            
+
             return response([
                 'message' => "Registration Successfull",
                 'token' => $token,
